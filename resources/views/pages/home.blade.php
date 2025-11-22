@@ -12,9 +12,6 @@
                     <p data-aos="fade-up" data-aos-delay="200" class="tagline fw-bold typing">
                         #Together <span class="typed-text fw-bold"></span><span class="cursor fw-bold">&nbsp;</span>
                     </p>
-                    {{-- <small class="lead mt-5" data-aos="fade-up" data-aos-delay="500">
-                        Selamat Datang! di Website Resmi BEM Fasilkom Unsika
-                    </small> --}}
                 </div>
             </div>
         </div>
@@ -50,17 +47,18 @@
 
     <!-- ======= Seputar Fasilkom Section ======= -->
     <section id="seputar-fasilkom" class="seputar-fasilkom">
-        <div class="container mb-5" data-aos="fade-up">
+        <div class="container mb-5">
             <div class="row">
                 <div class="col-md">
-                    <header class="section-header fw-bold">
+                    <header class="section-header fw-bold" data-aos="fade-up" data-aos-delay="200">
                         <p>Seputar Fasilkom</p>
                     </header>
                 </div>
             </div>
-            <div class="row justify-content-between">
+            <div class="row justify-content-between" data-aos="fade-up">
+                {{-- berita --}}
                 <div class="col-lg-6 col-md-6 col-12 col-sm-12 mt-5">
-                    <h3 class="fw-bold text-center">Berita Terhangat</h3>
+                    <h3 class="headerBerita fw-bold text-center">Berita</h3>
                     <section class="section slider">
                         <div class="section__entry section__entry--center"></div>
                         @forelse ($beritas->reverse() as $berita)
@@ -92,8 +90,10 @@
                         </div>
                     </section>
                 </div>
+
+                {{-- event --}}
                 <div class="col-lg-5 col-md-5 col-12 col-sm-12 event mt-5">
-                    <h3 class="text-center fw-bold">Upcoming Events</h3>
+                    <h3 class="headerEvent text-center fw-bold">Events</h3>
                     <br />
                     @php
                         $startIndex = \Carbon\Carbon::now()->format('n') - 1;
@@ -103,7 +103,7 @@
                         );
                     @endphp
 
-                    <div class="owl-carousel event owl-theme mt-5">
+                    <div class="owl-carousel event owl-theme mt-5 border-left border-primary">
                         @foreach ($bulansShifted as $bulan)
                             <div class="item d-flex justify-content-center p-1">
                                 <div class="card border-0 p-2 card-event-home">
@@ -137,17 +137,17 @@
     </section>
     <!-- End Seputar Fasilkom Section -->
 
-    <!-- ======= Features Section ======= -->
+
+    <!-- ======= Aplikasi Publik Section ======= -->
     <section id="features" class="features">
         <div class="container" data-aos="fade-up">
-            <header class="section-header fw-bold">
-                <p>Aplikasi Publik</p>
-            </header>
             <div class="row">
-                <div class="col-md-4 text-center mt-4 d-flex align-items-center justify-content-center">
-                    <img src="{{ url('frontend/assets/img/aplikasi-publik.svg') }}" alt="" class="mx-auto">
+                <div class="col-md-6 mt-3 d-flex justify-content-center align-items-center">
+                    <header class="section-header fw-bold">
+                        <p>Aplikasi Publik</p>
+                    </header>
                 </div>
-                <div class="col-md-6 mt-5 text-center">
+                <div class="col-md-6 mt-3 text-center">
                     <div class="row m-4">
                         <div class="col-lg" data-aos="zoom-out" data-aos-delay="600">
                             <a class="card1" href="{{ route('apr') }}">
@@ -199,8 +199,9 @@
 
         </div>
     </section>
-    <!-- End Features Section -->
-    <!-- ======= Portfolio Section ======= -->
+    <!-- End Aplikasi Publik Section -->
+
+<!-- ======= Portfolio Section ======= -->
     <section id="portfolio" class="portfolio">
         <div class="container" data-aos="fade-up">
 
@@ -221,7 +222,7 @@
                                     <div class="product-img__item" id="img{{ $karya->id }}">
                                         <img src="{{ asset('storage/' . $karya->path) }}"
                                             class="img-thumbnail product-img__img"
-                                            style="width: 60%; border-radius: 20px;">
+                                            style="width: 60%; border-radius: 16px;">
                                     </div>
                                 @empty
                                 @endforelse
@@ -301,81 +302,5 @@
             </div>
 
         </div>
-
-        <script>
-            // alternatives cursor
-            document.addEventListener("DOMContentLoaded", () => {
-                const interactiveSection = document.getElementById("filosofiNama");
-                const imageUrl = "{{ url('frontend/assets/img/logo-kabinet/logo.png') }}";
-                // jarak trigger mouse untuk membuat gambar
-                const triggerDistance = 75;
-                
-                let lastX = null;
-                let lastY = null;
-
-                interactiveSection.addEventListener("mousemove", (e) => {
-                    const { clientX, clientY } = e;
-
-                    // record posisi pertama kali mouse bergerak
-                    if (lastX === null || lastY === null) {
-                        lastX = clientX;
-                        lastY = clientY;
-                        return;
-                    }
-
-                    // hitung jarak antara posisi terakhir dan posisi sekarang
-                    const distance = Math.sqrt(
-                        Math.pow(clientX - lastX, 2) + Math.pow(clientY - lastY, 2)
-                    );
-
-                    // jika jarak kurang dari trigger, tidak perlu membuat gambar baru
-                    if (distance < triggerDistance) {
-                        return;
-                    }
-
-                    // update posisi terakhir
-                    lastX = clientX;
-                    lastY = clientY;
-
-                    const img = document.createElement("img");
-                    img.src = imageUrl;
-                    img.className = "cursor-image";
-
-                    // ambil posisi pada section
-                    const rect = interactiveSection.getBoundingClientRect();
-
-                    // hitung posisi relatif terhadap section
-                    const relativeX = clientX - rect.left;
-                    const relativeY = clientY - rect.top;
-
-                    img.style.left = `${relativeX}px`;
-                    img.style.top = `${relativeY}px`;
-
-                    // tweak rotasi
-                    const randomRotation = (Math.random() - 0.5) * 30;
-                    img.style.transform = `translate(-50%, -50%) scale(0) rotate(${randomRotation}deg)`;
-
-                    interactiveSection.appendChild(img);
-
-                    setTimeout(() => {
-                        img.classList.add("visible");
-                        // Add the random rotation again in the final state
-                        img.style.transform = `translate(-50%, -50%) scale(1) rotate(${randomRotation}deg)`;
-                    }, 10);
-
-                    // hilangkan gambar
-                    setTimeout(() => {
-                        img.style.opacity = "0";
-                        img.style.transform = `translate(-50%, -50%) scale(0.8) rotate(${randomRotation}deg)`;
-
-                        setTimeout(() => {
-                            if (img.parentNode) {
-                                img.parentNode.removeChild(img);
-                            }
-                        }, 800);
-                    }, 2000);
-                });
-            });
-        </script>
     </section>
 @endsection
